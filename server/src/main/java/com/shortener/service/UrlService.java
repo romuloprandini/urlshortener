@@ -1,5 +1,6 @@
 package com.shortener.service;
 
+import com.shortener.entity.TopHost;
 import com.shortener.entity.Url;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +23,5 @@ public interface UrlService {
 
     Page<Url> findTopUrl(Pageable pageable);
 
-    Page<Url> findTopHost(Pageable pageable);
+    Page<TopHost> findTopHost(Pageable pageable);
 }

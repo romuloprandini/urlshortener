@@ -12,10 +12,10 @@ public class PaginationUtil {
     private static final String REL_FIRST = "first";
     private static final String REL_LAST = "last";
     private static final String PAGE = "page";
-    private static final String X_TOTAL_COUNT="X-Total-Count";
+    public static final String X_TOTAL_COUNT="X-Total-Count";
 
 
-    public static void generatePagination(UriComponentsBuilder uriBuilder, HttpServletResponse response, int page, int totalPages, int pageSize) {
+    public static void generatePagination(UriComponentsBuilder uriBuilder, HttpServletResponse response, int page, int totalPages, int pageSize, long totalElements) {
         StringBuilder linkHeader = new StringBuilder();
         if (hasNextPage(page, totalPages)) {
             String uriForNextPage = constructNextPageUri(uriBuilder, page, pageSize);
@@ -39,7 +39,7 @@ public class PaginationUtil {
 
         if (linkHeader.length() > 0) {
             response.addHeader(HttpHeaders.LINK, linkHeader.toString());
-            response.addHeader(X_TOTAL_COUNT, String.valueOf(totalPages));
+            response.addHeader(X_TOTAL_COUNT, String.valueOf(totalElements));
         }
     }
 

@@ -1,10 +1,10 @@
 package com.shortener.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.shortener.entity.TopHost;
 import com.shortener.entity.Url;
 import com.shortener.service.UrlService;
+import com.shortener.util.PaginationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +12,12 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,13 +43,13 @@ public class UrlControllerTest {
     @InjectMocks
     UrlController urlController;
 
-    JacksonTester<Url> json;
-
+    JacksonTester<Url> jsonUrl;
+    JacksonTester<TopHost> jsonTopHost;
     MockMvc mockMvc;
     Url url;
 
     @BeforeEach
-    void loadUrl() {
+    void configureTest() {
         Timestamp now = Timestamp.from(Instant.now());
         url = Url.builder()
             .id(now.getTime())
@@ -58,10 +63,23 @@ public class UrlControllerTest {
 
         mockMvc = MockMvcBuilders
                 .standaloneSetup(urlController)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
+    }
+
+    @Test
+    void createUrl() throws Exception {
+        when(urlService.create(ArgumentMatchers.anyString())).thenReturn(url);
+
+        mockMvc.perform(post("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(url.getUrl()))
+                .andExpect(status().isCreated())
+                .andExpect(header().string(HttpHeaders.LOCATION, "/"+url.getIdentifier()));
+
     }
 
     @Test
@@ -83,20 +101,45 @@ public class UrlControllerTest {
 
         mockMvc.perform(get("/"+url.getIdentifier()+"?noRedirect=true"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(json.write(url).getJson()));
+                .andExpect(content().string(jsonUrl.write(url).getJson()));
 
         verifyZeroInteractions(urlService);
     }
 
     @Test
-    void createUrl() throws Exception {
-        when(urlService.create(ArgumentMatchers.anyString())).thenReturn(url);
+    void getLatestUrl() throws Exception {
+        when(urlService.findLatestUrlCreated()).thenReturn(url);
 
-        mockMvc.perform(post("/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(url.getUrl()))
-                .andExpect(status().isCreated())
-                .andExpect(header().string(HttpHeaders.LOCATION, "/"+url.getIdentifier()));
+        mockMvc.perform(get("/latest"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(jsonUrl.write(url).getJson()));
 
+        verifyZeroInteractions(urlService);
     }
+
+    @Test
+    void getTopUrl() throws Exception {
+        when(urlService.findTopUrl(ArgumentMatchers.any())).thenReturn(new PageImpl<>(Arrays.asList(url)));
+
+        mockMvc.perform(get("/top?type=url"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("["+jsonUrl.write(url).getJson()+"]"));
+                //.andExpect(header().string(PaginationUtil.X_TOTAL_COUNT, "1"));
+
+        verifyZeroInteractions(urlService);
+    }
+
+    @Test
+    void getTopHosts() throws Exception {
+        TopHost topHost = new TopHost(url.getHost(), 1);
+        when(urlService.findTopHost(ArgumentMatchers.any())).thenReturn(new PageImpl<>(Arrays.asList(topHost)));
+
+        mockMvc.perform(get("/top?type=host"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("["+jsonTopHost.write(topHost).getJson()+"]"));
+                //.andExpect(header().stringValues(PaginationUtil.X_TOTAL_COUNT, "1"));
+
+        verifyZeroInteractions(urlService);
+    }
+
 }

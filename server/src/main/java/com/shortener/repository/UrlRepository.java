@@ -1,5 +1,6 @@
 package com.shortener.repository;
 
+import com.shortener.entity.TopHost;
 import com.shortener.entity.Url;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +17,8 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Query("select u.url from Url u where u.identifier = ?1")
     String findUrlByIdentifier(String identifier);
 
-    @Query("select u, count(u.host) from Url u group by u.host order by count(u.host) desc")
-    Page<Url> findByTopHosts(Pageable pageable);
+    @Query("select u.host, count(u.host) as count from Url u group by u.host order by count(u.host) desc")
+    Page<TopHost> findByTopHosts(Pageable pageable);
 
     @Query("select u from Url u order by u.totalAccess")
     Page<Url> findByTopUrl(Pageable pageable);

@@ -1,5 +1,6 @@
 package com.shortener.service.impl;
 
+import com.shortener.entity.TopHost;
 import com.shortener.entity.Url;
 import com.shortener.exception.BusinessException;
 import com.shortener.repository.UrlRepository;
@@ -90,7 +91,7 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public Page<Url> findTopHost(Pageable pageable) {
+    public Page<TopHost> findTopHost(Pageable pageable) {
         return urlRepository.findByTopHosts(pageable);
     }
 

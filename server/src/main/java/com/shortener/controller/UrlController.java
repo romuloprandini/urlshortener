@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, exposedHeaders = {"Location", "Link", "X-Total-Count"})
 @RestController
 @RequestMapping(value = "${shortener.server.path:/}")
 public class UrlController {
@@ -58,11 +59,8 @@ public class UrlController {
 
     @GetMapping("/top")
     public ResponseEntity<?> getTop(@RequestParam(value = "type", defaultValue = "url") String type, Pageable pageable, UriComponentsBuilder uriBuilder, HttpServletResponse response) {
-        Page<Url> pageUrl;
+        Page<?> pageUrl;
         switch (type) {
-            case "latest":
-                Url url = urlService.findLatestUrlCreated();
-                return ResponseEntity.ok(url);
             case "url":
                 pageUrl = urlService.findTopUrl(pageable);
              break;
@@ -73,7 +71,7 @@ public class UrlController {
                 pageUrl = urlService.findAll(pageable);
                 break;
         }
-        PaginationUtil.generatePagination(uriBuilder, response, pageable.getPageNumber(), pageUrl.getTotalPages(), pageable.getPageSize());
+        PaginationUtil.generatePagination(uriBuilder, response, pageable.getPageNumber(), pageUrl.getTotalPages(), pageable.getPageSize(), pageUrl.getTotalElements());
         return ResponseEntity.ok(pageUrl.getContent());
     }
 
