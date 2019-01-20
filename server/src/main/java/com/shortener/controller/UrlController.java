@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, exposedHeaders = {"Location", "Link", "X-Total-Count"})
 @RestController
 @RequestMapping(value = "${shortener.server.path:/}")
 public class UrlController {

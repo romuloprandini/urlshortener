@@ -37,7 +37,8 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     public Boolean exists(String identifier) {
-        return urlRepository.existsByIdentifier(identifier);
+        Long id = decodeIdentifier(identifier);
+        return urlRepository.existsById(id);
     }
 
     @Override

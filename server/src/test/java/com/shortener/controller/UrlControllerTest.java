@@ -84,6 +84,7 @@ public class UrlControllerTest {
 
     @Test
     void getFullUrl() throws Exception {
+        when(urlService.exists(ArgumentMatchers.anyString())).thenReturn(true);
         when(urlService.getUrlByIdentifier(ArgumentMatchers.anyString())).thenReturn(url.getUrl());
         doAnswer(i -> null).when(urlService).incrementAccess(ArgumentMatchers.anyString());
 
@@ -96,6 +97,7 @@ public class UrlControllerTest {
 
     @Test
     void getFullUrlNoRedirect() throws Exception {
+        when(urlService.exists(ArgumentMatchers.anyString())).thenReturn(true);
         when(urlService.getByIdentifier(ArgumentMatchers.anyString())).thenReturn(url);
         doAnswer(i -> null).when(urlService).incrementAccess(ArgumentMatchers.anyString());
 
