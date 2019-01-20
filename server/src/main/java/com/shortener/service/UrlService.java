@@ -9,6 +9,8 @@ public interface UrlService {
 
     Url getById(Long id);
 
+    Boolean exists(String identifier);
+
     Url getByIdentifier(String identifier);
 
     String getUrlByIdentifier(String identifier);

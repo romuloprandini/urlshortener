@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-//@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, exposedHeaders = {"Location", "Link", "X-Total-Count"})
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, exposedHeaders = {"Location", "Link", "X-Total-Count"})
 @RestController
 @RequestMapping(value = "${shortener.server.path:/}")
 public class UrlController {
@@ -35,14 +35,14 @@ public class UrlController {
     public ResponseEntity<?> getFullUrl(@PathVariable("identifier") String identifier,
                                              @RequestParam(value = "noRedirect", required = false, defaultValue = "false") Boolean noRedirect) throws URISyntaxException {
 
+        if(!urlService.exists(identifier)) {
+            return ResponseEntity.notFound().build();
+        }
+
         urlService.incrementAccess(identifier);
 
         if(noRedirect) {
             Url url = urlService.getByIdentifier(identifier);
-        if(url == null) {
-            return ResponseEntity.notFound().build();
-        }
-
             return ResponseEntity.ok(url);
         }
         String url = urlService.getUrlByIdentifier(identifier);

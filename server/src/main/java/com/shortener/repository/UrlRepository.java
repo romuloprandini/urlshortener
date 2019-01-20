@@ -30,4 +30,5 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Query("update Url u set u.totalAccess = u.totalAccess + 1, u.lastAccess = current_timestamp() where u.id = ?1")
     void updateTotalAccessAndLastAccess(Long id);
 
+    Boolean existsByIdentifier(String identifier);
 }

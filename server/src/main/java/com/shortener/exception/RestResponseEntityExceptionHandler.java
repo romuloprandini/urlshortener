@@ -21,4 +21,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         final String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE, request);
     }
+    @ExceptionHandler({ Exception.class })
+    public ResponseEntity<Object> handleGenericException(final Exception ex, final WebRequest request) {
+        final String bodyOfResponse = ex.getMessage();
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
 }

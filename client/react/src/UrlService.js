@@ -1,14 +1,14 @@
-const apiUrl = "http://localhost:8080";
+import { API_PATH, FULL_API_URL, } from './Constants';
 
 export default {
   create: async (url) => {
-    const rawResponse = await fetch(apiUrl, 
+    const rawResponse = await fetch(FULL_API_URL, 
       { method: 'POST', body: url, headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }});
       const shortedUrl = rawResponse.headers.get('Location');;
-      return shortedUrl;
+      return shortedUrl.replace(API_PATH, '');
   },
   get: async (url) => {
     const rawResponse = await fetch(`${url}?noRedirect=true}`, 
@@ -20,7 +20,7 @@ export default {
       return content;
   },
   topUrl: async () => {
-    const rawResponse = await fetch(`${apiUrl}/top?type=url`, 
+    const rawResponse = await fetch(`${FULL_API_URL}/top?type=url`, 
       { method: 'GET', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

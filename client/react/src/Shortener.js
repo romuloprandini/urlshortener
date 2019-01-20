@@ -69,7 +69,7 @@ class Shortener extends Component {
           <Row sm="12" md={{ size: 6, offset: 3 }}>
             <Col>
               <Jumbotron>
-                <p className="lead  text-center">Here is your new, beautiful and nice shorted URL</p>
+                <p className="lead  text-center">Here is your new, beautiful and nice short URL</p>
                 <p className="lead  text-center">
                   <a className="text-center" style={{fontSize:"x-large"}} href={`${this.state.shortedUrl}`}>{BASE_URL+this.state.shortedUrl}</a>
                 </p>
