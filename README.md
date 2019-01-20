@@ -126,13 +126,15 @@ docker run -d -p 80:3000 urlshortener-frontend yarn start
 
 ## Note
 
-If you decided to use manual or Dockerfile deploy you need to configure the MySQL database and update the lines below in `server/src/main/resource/application-prod.properties`:
-
-```
-spring.datasource.url=jdbc:mysql://localhost:3306/shortener
-spring.datasource.username=shortener
-spring.datasource.password=shortenerpassword
-```
+If you decided to use manual or Dockerfile deploy the java backend use H2 memory database as default. If you want to persist the data, you will need to configure the MySQL database, and execute these steps:
+- execute the script in the Mysql database `database\dump.sql`
+- set the environment variable `SPRING_PROFILES_ACTIVE=prod`
+- update the lines below in `server/src/main/resource/application-prod.properties`:
+  ```
+  spring.datasource.url=jdbc:mysql://localhost:3306/shortener
+  spring.datasource.username=shortener
+  spring.datasource.password=shortenerpassword
+  ```
 ## Licence
 
 The application is released under [MIT](https://github.com/romuloprandini/urlshortener/blob/master/LICENSE) licence
