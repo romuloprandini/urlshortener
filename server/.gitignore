@@ -1,3 +1,5 @@
+tmp/
+
 
 # Created by https://www.gitignore.io/api/java,intellij+all
 # Edit at https://www.gitignore.io/?templates=java,intellij+all
@@ -111,4 +113,3 @@ target/
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,intellij+all
-
