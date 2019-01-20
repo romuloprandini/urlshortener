@@ -10,5 +10,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 ADD package.json /app/package.json
 RUN yarn global add react-scripts && yarn 
 
+ADD ./ .
+
+VOLUME /app/build
 # build the app
 CMD ["yarn", "build"]

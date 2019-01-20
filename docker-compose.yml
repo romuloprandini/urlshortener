@@ -18,6 +18,10 @@ services:
     nginx:
         image: nginx:1.13.8
         container_name: nginx
+        environment:
+            - REACT_APP_BASE_URL=http://35.226.99.50/
+            - REACT_APP_API_URL=http://35.226.99.50/
+            - REACT_APP_API_PATH=/api
         volumes:
             - ./client/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
             - ./client/react/build:/var/www/html
@@ -25,13 +29,14 @@ services:
             - 80:80
         links:
             - react
+            - java
     react:
         build:
             context: ./client/react
             dockerfile: Dockerfile
         container_name: react
         volumes:
-            - ./client/react:/app 
+            - ./client/react/build:/app/build
     # Database
     mysql:
         image: mysql:5.7
