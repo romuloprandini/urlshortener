@@ -1,7 +1,7 @@
 # URL Shortener Java
 
 ## Description
-This project was created for the Vanhack Brazil challenge to demonstrate my hability with Java, Docker and React. The project deadline was small (2 days), so a simple project was created to ensure that all functionallities work.
+This project was created for the Vanhack Brazil challenge to demonstrate my habilities with Java, Docker and React. The project deadline was small (2 days), so a simple project was created to ensure that all functionallities work.
 
 ## Structure
 The project contain both Backend (Java) and Frontend (React) and a docker-compose.yml to deploy then together.
@@ -76,7 +76,7 @@ There are three methods to deploy this application:
 - Dockerfile: where you can build an image of each application and use then in a Docker environment.
 - Docker-Compose: there is a `docker-compose.yml` to deploy the backend and frontend in a Nginx Server and a Mysql database for persistence.
 
-## `Java`
+## Java
 Manually
 
 Url Shortener backend is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/). You can build a jar file and run it from the command line:
@@ -102,7 +102,7 @@ docker run -d -p 8080:8080 urlshortener-backend
 
 The application will be avaliable at [http://localhost:8080/api](http://localhost:8080/api)
 
-## `React`
+## React
 Manually
 
 Url Shortener frontend is a [React](https://reactjs.org/) application build using [create-react-app](https://github.com/facebook/create-react-app). You can build the static site or run it from the command line:
