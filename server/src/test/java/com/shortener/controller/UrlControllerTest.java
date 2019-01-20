@@ -133,7 +133,7 @@ public class UrlControllerTest {
 
     @Test
     void getTopHosts() throws Exception {
-        TopHost topHost = new TopHost(url.getHost(), 1);
+        TopHost topHost = new TopHost(url.getHost(), 1L);
         when(urlService.findTopHost(ArgumentMatchers.any())).thenReturn(new PageImpl<>(Arrays.asList(topHost)));
 
         mockMvc.perform(get("/top?type=host"))

@@ -20,7 +20,16 @@ export default {
       return content;
   },
   topUrl: async () => {
-    const rawResponse = await fetch(`${FULL_API_URL}/top?type=url`, 
+    const rawResponse = await fetch(`${FULL_API_URL}/top?type=url?size=10`, 
+      { method: 'GET', headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }});
+      const content = await rawResponse.json();
+      return content;
+  },
+  topHost: async () => {
+    const rawResponse = await fetch(`${FULL_API_URL}/top?type=host&size=10`, 
       { method: 'GET', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

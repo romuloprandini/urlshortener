@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter @Setter
 public class TopHost {
     private String host;
-    private Integer count;
+    private Long count;
 
     public TopHost() {
     }
 
-    public TopHost(String host, Integer count) {
+    public TopHost(String host, Long count) {
         this.host = host;
         this.count = count;
     }

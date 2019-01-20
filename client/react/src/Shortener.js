@@ -16,15 +16,8 @@ import { BASE_URL } from './Constants'
 
 class Shortener extends Component {
   state = {
-    isOpen: false,
     url: "",
     shortedUrl: null
-  }
-
-  toggle = () => {
-    this.setState((prevState) => ({
-      isOpen: !prevState.isOpen
-    }));
   }
 
   handleChange = (e) => {
